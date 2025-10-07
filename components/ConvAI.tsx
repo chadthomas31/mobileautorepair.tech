@@ -77,14 +77,17 @@ export function ConvAI() {
       return;
     }
     try {
+      console.log("Fetching signed URL...");
       const signedUrl = await getSignedUrl();
+      console.log("Signed URL received, starting session...");
       const conversationId = await conversation.startSession({
         signedUrl
       });
-      console.log(conversationId);
+      console.log("Conversation started:", conversationId);
     } catch (error) {
       console.error("Failed to start conversation:", error);
-      alert("Failed to start conversation. Please check that your ElevenLabs API key has the 'convai_write' permission.");
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      alert(`Failed to start conversation: ${errorMessage}`);
     }
   }
 
