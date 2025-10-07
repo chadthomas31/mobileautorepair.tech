@@ -81,11 +81,11 @@ export function ConvAI() {
   }
 
   return (
-    <div className={"flex justify-center items-center gap-x-10"}>
-      <Card className={"rounded-3xl border-blue-600/20 bg-gradient-to-br from-blue-50 to-white shadow-xl"}>
-        <CardContent>
-          <CardHeader>
-            <CardTitle className={"text-center py-2 text-blue-900"}>
+    <div className={"flex justify-center items-center px-4"}>
+      <Card className={"rounded-3xl border-blue-600/20 bg-gradient-to-br from-blue-50 to-white shadow-xl w-full max-w-md"}>
+        <CardContent className="p-4 md:p-6">
+          <CardHeader className="p-0 pb-4">
+            <CardTitle className={"text-center py-2 text-blue-900 text-lg md:text-xl"}>
               {conversation.status === "connected"
                 ? conversation.isSpeaking
                   ? `AI Assistant is speaking`
@@ -96,13 +96,13 @@ export function ConvAI() {
           <div className={"flex flex-col gap-y-4 text-center items-center"}>
             <Orb 
               agentState={getAgentState()} 
-              className={"w-[250px] h-[250px]"}
+              className={"w-[200px] h-[200px] sm:w-[250px] sm:h-[250px]"}
               colors={["#2563eb", "#60a5fa"]}
             />
 
             <Button
               variant={"outline"}
-              className={"rounded-full bg-blue-600 text-white hover:bg-blue-700 hover:text-white border-blue-600"}
+              className={"rounded-full bg-blue-600 text-white hover:bg-blue-700 hover:text-white border-blue-600 w-full sm:w-auto"}
               size={"lg"}
               disabled={
                 conversation.status !== "disconnected"
@@ -113,7 +113,7 @@ export function ConvAI() {
             </Button>
             <Button
               variant={"outline"}
-              className={"rounded-full border-red-600 text-red-600 hover:bg-red-50"}
+              className={"rounded-full border-red-600 text-red-600 hover:bg-red-50 w-full sm:w-auto"}
               size={"lg"}
               disabled={conversation.status === "disconnected"}
               onClick={stopConversation}

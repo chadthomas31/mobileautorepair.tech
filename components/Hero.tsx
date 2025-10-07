@@ -12,15 +12,15 @@ export default function Hero() {
   }
 
   return (
-    <section className="pt-32 pb-20 bg-gradient-to-br from-blue-50 to-white">
+    <section className="pt-24 md:pt-32 pb-12 md:pb-20 bg-gradient-to-br from-blue-50 to-white">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6">
               Professional Auto Repair
               <span className="text-primary block">At Your Location</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 md:mb-8">
               Skip the shop! Our certified mechanics come to you with all the tools and expertise needed to get your vehicle running smoothly.
             </p>
             <div className="space-y-3 mb-8">
@@ -37,14 +37,14 @@ export default function Hero() {
                 <span className="text-gray-700">Competitive Pricing & Warranty</span>
               </div>
             </div>
-            <Button onClick={scrollToBooking} size="lg" className="text-lg px-8">
+            <Button onClick={scrollToBooking} size="lg" className="text-base md:text-lg px-6 md:px-8 w-full sm:w-auto">
               Schedule Service
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
-          <div className="relative">
-            <div className="bg-gradient-to-br from-primary to-blue-600 rounded-2xl p-8 shadow-2xl">
-              <div className="bg-white rounded-xl p-6 space-y-4">
+          <div className="relative mt-8 md:mt-0">
+            <div className="bg-gradient-to-br from-primary to-blue-600 rounded-2xl p-6 md:p-8 shadow-2xl">
+              <div className="bg-white rounded-xl p-4 md:p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">Available Now</span>
                   <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">

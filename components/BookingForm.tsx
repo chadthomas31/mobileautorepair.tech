@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Calendar, MapPin, Phone, Mail, CheckCircle } from 'lucide-react'
+import { Calendar, MapPin, Phone, Mail, CheckCircle, Camera, X } from 'lucide-react'
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
@@ -17,6 +17,8 @@ export default function BookingForm() {
     date: '',
     message: '',
   })
+  const [photos, setPhotos] = useState<File[]>([])
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -25,12 +27,19 @@ export default function BookingForm() {
     setIsSubmitting(true)
 
     try {
+      const formDataToSend = new FormData()
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value)
+      })
+      
+      // Add photos to form data
+      photos.forEach((photo, index) => {
+        formDataToSend.append(`photo_${index}`, photo)
+      })
+
       const response = await fetch('/api/booking', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: formDataToSend,
       })
 
       if (response.ok) {
@@ -44,6 +53,8 @@ export default function BookingForm() {
           date: '',
           message: '',
         })
+        setPhotos([])
+        setPhotoPreviews([])
       }
     } catch (error) {
       console.error('Error submitting form:', error)
@@ -57,6 +68,30 @@ export default function BookingForm() {
       ...formData,
       [e.target.name]: e.target.value,
     })
+  }
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    if (files.length + photos.length > 5) {
+      alert('Maximum 5 photos allowed')
+      return
+    }
+
+    setPhotos([...photos, ...files])
+    
+    // Create preview URLs
+    files.forEach(file => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPhotoPreviews(prev => [...prev, reader.result as string])
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
+  const removePhoto = (index: number) => {
+    setPhotos(photos.filter((_, i) => i !== index))
+    setPhotoPreviews(photoPreviews.filter((_, i) => i !== index))
   }
 
   if (isSubmitted) {
@@ -209,6 +244,61 @@ export default function BookingForm() {
                     placeholder="Tell us more about your vehicle and the issue..."
                     rows={4}
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Camera className="inline h-4 w-4 mr-1" />
+                    Upload Photos (Optional)
+                  </label>
+                  <p className="text-xs text-gray-500 mb-3">
+                    Add photos of your vehicle or the issue (Max 5 photos, 10MB each)
+                  </p>
+                  
+                  <div className="space-y-3">
+                    {photoPreviews.length > 0 && (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {photoPreviews.map((preview, index) => (
+                          <div key={index} className="relative group">
+                            <img
+                              src={preview}
+                              alt={`Preview ${index + 1}`}
+                              className="w-full h-24 object-cover rounded-lg border-2 border-gray-200"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removePhoto(index)}
+                              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {photos.length < 5 && (
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary hover:bg-gray-50 transition-colors">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <Camera className="h-8 w-8 text-gray-400 mb-2" />
+                          <p className="text-sm text-gray-600 font-medium">
+                            {photos.length === 0 ? 'Tap to upload photos' : 'Add more photos'}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {5 - photos.length} remaining
+                          </p>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          capture="environment"
+                          onChange={handlePhotoChange}
+                          className="hidden"
+                        />
+                      </label>
+                    )}
+                  </div>
                 </div>
 
                 <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
