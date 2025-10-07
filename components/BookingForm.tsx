@@ -141,7 +141,7 @@ export default function BookingForm() {
                     required
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="(555) 123-4567"
+                    placeholder="(657) 789-4652"
                   />
                 </div>
 
@@ -228,7 +228,7 @@ export default function BookingForm() {
                   <Phone className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
-                    <p className="text-gray-600">(555) 123-4567</p>
+                    <p className="text-gray-600">(657) 789-4652</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
