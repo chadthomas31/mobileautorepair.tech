@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Calendar, MapPin, Phone, Mail, CheckCircle, Camera, X } from 'lucide-react'
+import { Calendar, MapPin, Phone, Mail, CheckCircle, Camera, X, Video } from 'lucide-react'
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
@@ -72,8 +72,16 @@ export default function BookingForm() {
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
-    if (files.length + photos.length > 5) {
-      alert('Maximum 5 photos allowed')
+    
+    // Check file size (max 50MB per file)
+    const oversizedFiles = files.filter(f => f.size > 50 * 1024 * 1024)
+    if (oversizedFiles.length > 0) {
+      alert('Some files are too large. Maximum file size is 50MB.')
+      return
+    }
+    
+    if (files.length + photos.length > 10) {
+      alert('Maximum 10 files allowed (photos + videos)')
       return
     }
 
@@ -249,10 +257,11 @@ export default function BookingForm() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <Camera className="inline h-4 w-4 mr-1" />
-                    Upload Photos (Optional)
+                    <Video className="inline h-4 w-4 mr-1" />
+                    Upload Photos or Videos (Optional)
                   </label>
                   <p className="text-xs text-gray-500 mb-3">
-                    Add photos of your vehicle or the issue (Max 5 photos, 10MB each)
+                    Add photos or videos of your vehicle or the issue (Max 10 files, 50MB each)
                   </p>
                   
                   <div className="space-y-3">
@@ -260,11 +269,20 @@ export default function BookingForm() {
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {photoPreviews.map((preview, index) => (
                           <div key={index} className="relative group">
-                            <img
-                              src={preview}
-                              alt={`Preview ${index + 1}`}
-                              className="w-full h-24 object-cover rounded-lg border-2 border-gray-200"
-                            />
+                            {photos[index]?.type.startsWith('video/') ? (
+                              <div className="relative w-full h-24 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center">
+                                <Video className="h-8 w-8 text-gray-400" />
+                                <span className="absolute bottom-1 left-1 text-xs bg-black/70 text-white px-1 rounded">
+                                  Video
+                                </span>
+                              </div>
+                            ) : (
+                              <img
+                                src={preview}
+                                alt={`Preview ${index + 1}`}
+                                className="w-full h-24 object-cover rounded-lg border-2 border-gray-200"
+                              />
+                            )}
                             <button
                               type="button"
                               onClick={() => removePhoto(index)}
@@ -277,20 +295,23 @@ export default function BookingForm() {
                       </div>
                     )}
                     
-                    {photos.length < 5 && (
+                    {photos.length < 10 && (
                       <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary hover:bg-gray-50 transition-colors">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                          <Camera className="h-8 w-8 text-gray-400 mb-2" />
+                          <div className="flex gap-2 mb-2">
+                            <Camera className="h-8 w-8 text-gray-400" />
+                            <Video className="h-8 w-8 text-gray-400" />
+                          </div>
                           <p className="text-sm text-gray-600 font-medium">
-                            {photos.length === 0 ? 'Tap to upload photos' : 'Add more photos'}
+                            {photos.length === 0 ? 'Tap to upload photos/videos' : 'Add more files'}
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
-                            {5 - photos.length} remaining
+                            {10 - photos.length} remaining
                           </p>
                         </div>
                         <input
                           type="file"
-                          accept="image/*"
+                          accept="image/*,video/*"
                           multiple
                           capture="environment"
                           onChange={handlePhotoChange}

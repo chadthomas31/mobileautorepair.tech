@@ -25,7 +25,8 @@
     "@react-three/drei": "^9.88.0",
     "@types/three": "^0.160.0",
     "three": "^0.160.0",
-    "framer-motion": "^10.16.0"
+    "framer-motion": "^10.16.0",
+    "@vercel/blob": "^0.23.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",

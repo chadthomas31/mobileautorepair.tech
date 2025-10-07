@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { put } from '@vercel/blob'
 
 export async function POST(request: Request) {
   try {
@@ -21,24 +22,39 @@ export async function POST(request: Request) {
       )
     }
 
-    // Extract photos
-    const photos: File[] = []
-    for (let i = 0; i < 5; i++) {
-      const photo = formData.get(`photo_${i}`)
-      if (photo instanceof File) {
-        photos.push(photo)
+    // Extract and upload photos/videos to Vercel Blob
+    const uploadedFiles: { url: string; filename: string; type: string }[] = []
+    const bookingId = `BOOK-${Date.now()}`
+    
+    for (let i = 0; i < 10; i++) {
+      const file = formData.get(`photo_${i}`)
+      if (file instanceof File && file.size > 0) {
+        try {
+          // Create a unique filename with booking ID
+          const timestamp = Date.now()
+          const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
+          const filename = `bookings/${bookingId}/${timestamp}_${sanitizedName}`
+          
+          // Upload to Vercel Blob
+          const blob = await put(filename, file, {
+            access: 'public',
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+          })
+          
+          uploadedFiles.push({
+            url: blob.url,
+            filename: file.name,
+            type: file.type
+          })
+        } catch (uploadError) {
+          console.error(`Error uploading file ${file.name}:`, uploadError)
+        }
       }
     }
 
-    // Here you would typically:
-    // 1. Save photos to cloud storage (AWS S3, Cloudinary, etc.)
-    // 2. Save booking data to a database
-    // 3. Send confirmation email to customer with photos
-    // 4. Send notification to your team
-    // 5. Integrate with calendar/scheduling system
-    
-    // For now, we'll just log it and return success
+    // Log booking details
     console.log('New booking received:', {
+      bookingId,
       name,
       email,
       phone,
@@ -46,23 +62,23 @@ export async function POST(request: Request) {
       service,
       date,
       message,
-      photoCount: photos.length,
-      photos: photos.map(p => ({ name: p.name, size: p.size, type: p.type }))
+      filesUploaded: uploadedFiles.length,
+      fileUrls: uploadedFiles.map(f => f.url)
     })
     
-    // You can integrate with services like:
-    // - AWS S3 / Cloudinary for photo storage
-    // - SendGrid/Mailgun for email notifications
-    // - Twilio for SMS notifications
-    // - Google Calendar API for scheduling
-    // - Your preferred database (PostgreSQL, MongoDB, etc.)
+    // Here you would typically:
+    // 1. Save booking data and file URLs to a database
+    // 2. Send confirmation email to customer with file links
+    // 3. Send notification to your team with booking details
+    // 4. Integrate with calendar/scheduling system
     
     return NextResponse.json(
       { 
         success: true, 
         message: 'Booking received successfully',
-        bookingId: `BOOK-${Date.now()}`,
-        photoCount: photos.length
+        bookingId,
+        filesUploaded: uploadedFiles.length,
+        fileUrls: uploadedFiles.map(f => f.url)
       },
       { status: 200 }
     )
