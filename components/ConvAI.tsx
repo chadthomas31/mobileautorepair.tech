@@ -2,10 +2,21 @@
 
 import { Button } from "@/components/ui/button";
 import * as React from "react";
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useConversation } from "@elevenlabs/react";
-import { Orb } from "@/components/ui/orb";
+import { Mic, MicOff } from "lucide-react";
+import dynamic from "next/dynamic";
+
+// Dynamically import Orb with no SSR to avoid hydration issues
+const Orb = dynamic(() => import("@/components/ui/orb").then(mod => ({ default: mod.Orb })), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] flex items-center justify-center">
+      <div className="animate-pulse bg-blue-200 rounded-full w-32 h-32"></div>
+    </div>
+  )
+});
 
 async function requestMicrophonePermission() {
   try {
@@ -29,6 +40,20 @@ async function getSignedUrl(): Promise<string> {
 }
 
 export function ConvAI() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    // Detect if mobile device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const conversation = useConversation({
     onConnect: () => {
       console.log("connected");
@@ -80,6 +105,32 @@ export function ConvAI() {
     return null;
   }
 
+  // Simple mobile-friendly indicator
+  const SimpleMicIndicator = () => (
+    <div className="relative w-32 h-32 flex items-center justify-center">
+      <div 
+        className={`absolute inset-0 rounded-full transition-all duration-500 ${
+          conversation.status === "connected" 
+            ? conversation.isSpeaking 
+              ? "bg-blue-500 animate-pulse scale-110" 
+              : "bg-green-500 animate-pulse"
+            : "bg-gray-300"
+        }`}
+      />
+      <div className="relative z-10">
+        {conversation.status === "connected" ? (
+          <Mic className="h-16 w-16 text-white" />
+        ) : (
+          <MicOff className="h-16 w-16 text-white" />
+        )}
+      </div>
+    </div>
+  );
+
+  if (!isClient) {
+    return null; // Avoid hydration mismatch
+  }
+
   return (
     <div className={"flex justify-center items-center px-4"}>
       <Card className={"rounded-3xl border-blue-600/20 bg-gradient-to-br from-blue-50 to-white shadow-xl w-full max-w-md"}>
@@ -94,11 +145,15 @@ export function ConvAI() {
             </CardTitle>
           </CardHeader>
           <div className={"flex flex-col gap-y-4 text-center items-center"}>
-            <Orb 
-              agentState={getAgentState()} 
-              className={"w-[200px] h-[200px] sm:w-[250px] sm:h-[250px]"}
-              colors={["#2563eb", "#60a5fa"]}
-            />
+            {isMobile ? (
+              <SimpleMicIndicator />
+            ) : (
+              <Orb 
+                agentState={getAgentState()} 
+                className={"w-[200px] h-[200px] sm:w-[250px] sm:h-[250px]"}
+                colors={["#2563eb", "#60a5fa"]}
+              />
+            )}
 
             <Button
               variant={"outline"}
