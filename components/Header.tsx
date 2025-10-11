@@ -43,7 +43,7 @@ export default function Header() {
           <div className="flex items-center space-x-2">
             <Wrench className="h-8 w-8 text-primary" />
             <div>
-              <span className="text-xl font-bold text-gray-900 block">Mobile Auto Repair</span>
+              <span className="text-xl font-bold text-gray-900 block">Mobile Auto Repair Tech</span>
               <a href="tel:+16577894652" className="text-xs text-primary font-medium lg:hidden">
                 (657) 789-4652
               </a>

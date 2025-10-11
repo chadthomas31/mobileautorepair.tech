@@ -117,7 +117,7 @@ export async function sendBookingNotification(data: BookingEmailData) {
         </div>
         
         <div style="text-align: center; margin-top: 20px; color: #6b7280; font-size: 12px;">
-          <p>Mobile Auto Repair - Professional Service at Your Location</p>
+          <p>Mobile Auto Repair Tech - Professional Service at Your Location</p>
         </div>
       </body>
     </html>
@@ -125,7 +125,7 @@ export async function sendBookingNotification(data: BookingEmailData) {
 
   try {
     const result = await transporter.sendMail({
-      from: `"Mobile Auto Repair" <${process.env.SMTP_FROM || 'bookings@mobileautorepair.tech'}>`,
+      from: `"Mobile Auto Repair Tech" <${process.env.SMTP_FROM || 'bookings@mobileautorepair.tech'}>`,
       to: process.env.EMAIL_TO || 'info@mobileautorepair.tech',
       subject: `🚗 New Booking: ${data.name} - ${data.service}`,
       html: htmlContent,
@@ -212,7 +212,7 @@ ${data.transcript}
         </div>
         
         <div style="text-align: center; margin-top: 20px; color: #6b7280; font-size: 12px;">
-          <p>Mobile Auto Repair - AI Assistant Conversation Log</p>
+          <p>Mobile Auto Repair Tech - AI Assistant Conversation Log</p>
         </div>
       </body>
     </html>
@@ -220,7 +220,7 @@ ${data.transcript}
 
   try {
     const result = await transporter.sendMail({
-      from: `"Mobile Auto Repair AI" <${process.env.SMTP_FROM || 'chatbot@mobileautorepair.tech'}>`,
+      from: `"Mobile Auto Repair Tech AI" <${process.env.SMTP_FROM || 'chatbot@mobileautorepair.tech'}>`,
       to: process.env.EMAIL_TO || 'info@mobileautorepair.tech',
       subject: `💬 Chatbot Conversation: ${data.conversationId}`,
       html: htmlContent,

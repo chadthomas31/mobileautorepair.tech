@@ -8,7 +8,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <Wrench className="h-6 w-6" />
-              <span className="text-lg font-bold">Mobile Auto Repair</span>
+              <span className="text-lg font-bold">Mobile Auto Repair Tech</span>
             </div>
             <p className="text-gray-400 mb-4">
               ASE-certified mobile mechanics serving Orange County. Professional service at your location with transparent pricing and a 90-day warranty.
@@ -111,7 +111,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-          <p className="mb-2">&copy; {new Date().getFullYear()} Mobile Auto Repair. All rights reserved.</p>
+          <p className="mb-2">&copy; {new Date().getFullYear()} Mobile Auto Repair Tech. All rights reserved.</p>
           <p className="text-xs text-gray-500">
             Serving Orange County with professional mobile auto repair services since 2014
           </p>

@@ -40,7 +40,7 @@ export default function About() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Why Choose Mobile Auto Repair?
+            Why Choose Mobile Auto Repair Tech?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             We bring professional auto repair services directly to you—saving you time, money, and the hassle of traditional repair shops.

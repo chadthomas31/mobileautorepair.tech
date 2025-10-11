@@ -21,7 +21,7 @@ export default function Hero() {
               ⭐ ASE-Certified Mechanics • 90-Day Warranty
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6">
-              Mobile Auto Repair at Your Home or Workplace
+              Mobile Auto Repair Tech at Your Home or Workplace
               <span className="text-primary block mt-2">Serving Orange County & Surrounding Areas</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 md:mb-8">

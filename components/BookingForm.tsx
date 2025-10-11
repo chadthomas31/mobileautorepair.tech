@@ -121,7 +121,7 @@ export default function BookingForm() {
                   <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">Booking Received!</h3>
                   <p className="text-gray-600 mb-4">
-                    Thank you for choosing Mobile Auto Repair. We'll contact you shortly to confirm your appointment.
+                    Thank you for choosing Mobile Auto Repair Tech. We'll contact you shortly to confirm your appointment.
                   </p>
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-left">
                     <p className="text-sm text-blue-900 font-medium mb-2">📋 At your appointment:</p>
