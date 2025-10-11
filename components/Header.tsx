@@ -39,16 +39,17 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-5 md:py-6">
+      <div className="container mx-auto px-2 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex items-center" style={{ width: '100%', maxWidth: '90%' }}>
             <Image 
               src="/logo.png" 
               alt="Mobile Auto Repair Tech Logo" 
-              width={300} 
-              height={100}
-              className="h-16 md:h-20 w-auto"
+              width={1200} 
+              height={400}
+              className="w-[320px] sm:w-[400px] md:w-[500px] lg:w-[600px] h-auto"
               priority
+              style={{ width: '320px', height: 'auto', maxWidth: '100%' }}
             />
           </div>
 
@@ -74,7 +75,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden"
+            className="md:hidden p-2 -mr-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -83,39 +84,39 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 space-y-4">
+          <nav className="md:hidden mt-2 pb-6 space-y-3 bg-white border-t border-gray-100">
             <a 
               href="tel:+16577894652" 
-              className="flex items-center gap-2 text-primary font-semibold text-lg border-b border-gray-200 pb-3"
+              className="flex items-center gap-3 text-primary font-semibold text-lg border-b border-gray-200 pb-3 pt-3 px-2"
             >
               <Phone className="h-5 w-5" />
               (657) 789-4652
             </a>
             <button
               onClick={() => scrollToSection('services')}
-              className="block w-full text-left text-gray-700 hover:text-primary transition"
+              className="block w-full text-left text-gray-700 hover:text-primary transition py-3 px-2 hover:bg-gray-50"
             >
               Services
             </button>
             <button
               onClick={() => scrollToSection('about')}
-              className="block w-full text-left text-gray-700 hover:text-primary transition"
+              className="block w-full text-left text-gray-700 hover:text-primary transition py-3 px-2 hover:bg-gray-50"
             >
               About
             </button>
             <button
               onClick={() => scrollToSection('testimonials')}
-              className="block w-full text-left text-gray-700 hover:text-primary transition"
+              className="block w-full text-left text-gray-700 hover:text-primary transition py-3 px-2 hover:bg-gray-50"
             >
               Reviews
             </button>
             <button
               onClick={() => scrollToSection('service-areas')}
-              className="block w-full text-left text-gray-700 hover:text-primary transition"
+              className="block w-full text-left text-gray-700 hover:text-primary transition py-3 px-2 hover:bg-gray-50"
             >
               Service Areas
             </button>
-            <Button onClick={() => scrollToSection('booking')} className="w-full">
+            <Button onClick={() => scrollToSection('booking')} className="w-full mt-3 mx-2">
               <Phone className="mr-2 h-4 w-4" />
               Book Now
             </Button>
