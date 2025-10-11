@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Calendar, MapPin, Phone, Mail, CheckCircle, Camera, X, Video } from 'lucide-react'
+import { Calendar, MapPin, Phone, Mail, CheckCircle, Camera, X, Video, Bot } from 'lucide-react'
 import CalendlyEmbed from '@/components/CalendlyEmbed'
 
 export default function BookingForm() {
@@ -147,6 +147,23 @@ export default function BookingForm() {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Choose your preferred booking method below
           </p>
+          
+          {/* AI Assistant CTA */}
+          <div className="mt-6 mb-8 max-w-md mx-auto">
+            <a href="#ai-assistant">
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="w-full bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-300 hover:from-purple-100 hover:to-blue-100 text-purple-900 font-semibold h-auto py-4"
+              >
+                <Bot className="h-5 w-5 mr-2" />
+                <div className="text-left">
+                  <div className="font-bold">Ask our AI assistant about pricing/availability</div>
+                  <div className="text-xs font-normal opacity-75">Get instant answers 24/7</div>
+                </div>
+              </Button>
+            </a>
+          </div>
           
           {/* Booking Method Toggle */}
           <div className="flex justify-center gap-4 mt-8">
