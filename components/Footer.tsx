@@ -1,4 +1,5 @@
-import { Wrench, Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin, Clock } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin, Clock } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -6,9 +7,14 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <Wrench className="h-6 w-6" />
-              <span className="text-lg font-bold">Mobile Auto Repair Tech</span>
+            <div className="mb-4">
+              <Image 
+                src="/logo.png" 
+                alt="Mobile Auto Repair Tech Logo" 
+                width={200} 
+                height={67}
+                className="h-16 w-auto brightness-0 invert"
+              />
             </div>
             <p className="text-gray-400 mb-4">
               ASE-certified mobile mechanics serving Orange County. Professional service at your location with transparent pricing and a 90-day warranty.

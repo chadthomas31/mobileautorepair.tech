@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, X, Wrench, Phone, Mail } from 'lucide-react'
+import { Menu, X, Phone, Mail } from 'lucide-react'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 
 export default function Header() {
@@ -40,14 +41,18 @@ export default function Header() {
 
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Wrench className="h-8 w-8 text-primary" />
-            <div>
-              <span className="text-xl font-bold text-gray-900 block">Mobile Auto Repair Tech</span>
-              <a href="tel:+16577894652" className="text-xs text-primary font-medium lg:hidden">
-                (657) 789-4652
-              </a>
-            </div>
+          <div className="flex items-center space-x-3">
+            <Image 
+              src="/logo.png" 
+              alt="Mobile Auto Repair Tech Logo" 
+              width={180} 
+              height={60}
+              className="h-12 w-auto"
+              priority
+            />
+            <a href="tel:+16577894652" className="text-xs text-primary font-medium lg:hidden ml-2">
+              (657) 789-4652
+            </a>
           </div>
 
           {/* Desktop Navigation */}
