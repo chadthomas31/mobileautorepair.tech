@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Phone, Mail, MessageCircle, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 export default function FloatingContact() {
   const [isOpen, setIsOpen] = useState(false)
@@ -11,8 +12,17 @@ export default function FloatingContact() {
     <div className="fixed bottom-6 right-6 z-50">
       {isOpen && (
         <div className="mb-4 bg-white rounded-lg shadow-2xl p-4 space-y-3 animate-in slide-in-from-bottom">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="font-semibold text-gray-900">Contact Us</h3>
+          <div className="flex justify-between items-center mb-3 pb-2 border-b border-gray-200">
+            <div className="flex items-center gap-2">
+              <Image 
+                src="/logo_only.png" 
+                alt="Mobile Auto Repair Tech" 
+                width={32} 
+                height={32}
+                className="w-8 h-8"
+              />
+              <h3 className="font-semibold text-gray-900">Contact Us</h3>
+            </div>
             <button
               onClick={() => setIsOpen(false)}
               className="text-gray-400 hover:text-gray-600"

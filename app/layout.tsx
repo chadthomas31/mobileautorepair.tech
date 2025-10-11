@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     siteName: 'Mobile Auto Repair Tech',
     images: [
       {
-        url: '/og-image.png', // Must be an absolute URL
+        url: '/logo.png',
         width: 1200,
         height: 630,
       },
@@ -28,7 +28,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Mobile Auto Repair Tech Orange County | Expert Car Service at Your Location',
     description: 'Convenient and reliable mobile auto repair service in Orange County. Our certified mechanics come to you for car repair, maintenance, and diagnostics. Skip the shop and get back on the road faster!',
-    images: ['/og-image.png'], // Must be an absolute URL
+    images: ['/logo.png'],
+    creator: '@mobileautorepairtech',
   },
 }
 
@@ -39,6 +40,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/logo_only.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo_only.png" />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   )

@@ -62,11 +62,11 @@ export default function Hero() {
           </div>
           <div className="relative mt-8 md:mt-0">
             <Image
-              src="https://placehold.co/600x400/000000/FFFFFF/png?text=Mechanic+Working+on+Car"
-              alt="Professional mobile mechanic in Orange County working on the engine of a car."
+              src="/tech_helping_stranded_mother_son.jpg"
+              alt="Mobile Auto Repair Tech mechanic helping a stranded mother and son with their car in Orange County"
               width={600}
               height={400}
-              className="rounded-2xl shadow-2xl"
+              className="rounded-2xl shadow-2xl object-cover"
               priority
             />
           </div>

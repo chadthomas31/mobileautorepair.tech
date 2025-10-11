@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, MapPin, Phone, Mail, CheckCircle, Camera, X, Video, Bot } from 'lucide-react'
 import CalendlyEmbed from '@/components/CalendlyEmbed'
+import Image from 'next/image'
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
@@ -118,6 +119,13 @@ export default function BookingForm() {
             <Card className="border-green-200 bg-green-50">
               <CardContent className="pt-6">
                 <div className="text-center">
+                  <Image 
+                    src="/logo_only.png" 
+                    alt="Mobile Auto Repair Tech" 
+                    width={80} 
+                    height={80}
+                    className="mx-auto mb-4"
+                  />
                   <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">Booking Received!</h3>
                   <p className="text-gray-600 mb-4">

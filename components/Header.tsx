@@ -39,20 +39,17 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-5 md:py-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center">
             <Image 
               src="/logo.png" 
               alt="Mobile Auto Repair Tech Logo" 
-              width={180} 
-              height={60}
-              className="h-12 w-auto"
+              width={300} 
+              height={100}
+              className="h-16 md:h-20 w-auto"
               priority
             />
-            <a href="tel:+16577894652" className="text-xs text-primary font-medium lg:hidden ml-2">
-              (657) 789-4652
-            </a>
           </div>
 
           {/* Desktop Navigation */}
@@ -87,6 +84,13 @@ export default function Header() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <nav className="md:hidden mt-4 pb-4 space-y-4">
+            <a 
+              href="tel:+16577894652" 
+              className="flex items-center gap-2 text-primary font-semibold text-lg border-b border-gray-200 pb-3"
+            >
+              <Phone className="h-5 w-5" />
+              (657) 789-4652
+            </a>
             <button
               onClick={() => scrollToSection('services')}
               className="block w-full text-left text-gray-700 hover:text-primary transition"

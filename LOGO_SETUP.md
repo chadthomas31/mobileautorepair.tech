@@ -21,7 +21,7 @@ The logo image you provided should be saved to:
 
 1. **Header (Desktop & Mobile)**
    - Location: Top left of navigation
-   - Size: Height of 48px (auto width)
+   - Size: Height of 64-80px (auto width, responsive)
    - File: `components/Header.tsx`
 
 2. **Footer**
@@ -29,6 +29,29 @@ The logo image you provided should be saved to:
    - Size: Height of 64px (auto width)
    - Style: Inverted colors (white) for dark background
    - File: `components/Footer.tsx`
+
+3. **Booking Form Success State** ✨ NEW
+   - Location: Confirmation message after booking
+   - Logo: `logo_only.png` (icon version)
+   - Size: 80x80px
+   - File: `components/BookingForm.tsx`
+
+4. **Floating Contact Widget** ✨ NEW
+   - Location: Header of contact popup
+   - Logo: `logo_only.png` (icon version)
+   - Size: 32x32px
+   - File: `components/FloatingContact.tsx`
+
+5. **Browser Favicon** ✨ NEW
+   - Location: Browser tab and bookmarks
+   - Logo: `logo_only.png` (icon version)
+   - File: `app/layout.tsx`
+
+6. **Social Media & SEO** ✨ NEW
+   - Location: Open Graph and Twitter Card metadata
+   - Logo: `logo.png` (full logo)
+   - Purpose: Social sharing and search results
+   - File: `app/layout.tsx`
 
 ### Technical Details:
 
