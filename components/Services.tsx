@@ -71,18 +71,12 @@ export default function Services() {
             return (
               <Card 
                 key={index} 
-                className="hover:shadow-lg transition-shadow relative overflow-hidden min-h-[200px]"
-                style={{
-                  backgroundImage: `url('https://placehold.co/400x300/000000/FFFFFF/png?text=${service.title.replace(/\s/g, '+')}')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
+                className="hover:shadow-lg transition-shadow relative overflow-hidden min-h-[200px] bg-black"
                 aria-label={`${service.title} service in Orange County`}
               >
-                <div className="absolute inset-0 bg-black/50"></div>
-                <CardHeader className="relative p-6">
-                  <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="h-6 w-6 text-primary" />
+                <CardHeader className="relative p-6 flex flex-col items-center text-center">
+                  <div className="h-20 w-20 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="h-10 w-10 text-white" />
                   </div>
                   <CardTitle className="text-white text-lg">{service.title}</CardTitle>
                   <CardDescription className="text-gray-300 text-sm leading-relaxed">{service.description}</CardDescription>

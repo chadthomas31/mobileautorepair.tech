@@ -39,17 +39,16 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="container mx-auto px-2 py-4">
+      <div className="container mx-auto px-2 py-1">
         <div className="flex items-center justify-between">
-          <div className="flex items-center" style={{ width: '100%', maxWidth: '90%' }}>
+          <div className="flex items-center">
             <Image 
               src="/logo.png" 
               alt="Mobile Auto Repair Tech Logo" 
               width={1200} 
               height={400}
-              className="w-[320px] sm:w-[400px] md:w-[500px] lg:w-[600px] h-auto"
+              className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto"
               priority
-              style={{ width: '320px', height: 'auto', maxWidth: '100%' }}
             />
           </div>
 

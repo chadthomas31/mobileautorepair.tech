@@ -50,10 +50,10 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 items-center mb-12">
           <div className="relative order-2 md:order-1">
             <Image
-              src="https://placehold.co/600x400/000000/FFFFFF/png?text=Auto+Repair+Team"
+              src="/mobile_auto_repair_tech_team.jpg"
               alt="Team of certified mobile auto repair mechanics in Orange County."
-              width={600}
-              height={400}
+              width={1024}
+              height={1024}
               className="rounded-2xl shadow-2xl"
             />
             <div className="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-xl shadow-xl max-w-xs">
