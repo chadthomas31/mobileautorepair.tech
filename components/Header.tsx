@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, X, Wrench, Phone } from 'lucide-react'
+import { Menu, X, Wrench, Phone, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function Header() {
@@ -17,11 +17,37 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+      {/* Top Contact Bar - Desktop Only */}
+      <div className="hidden lg:block bg-gray-900 text-white py-2">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-6">
+              <a href="tel:+16577894652" className="flex items-center gap-2 hover:text-blue-400 transition">
+                <Phone className="h-4 w-4" />
+                <span className="font-medium">(657) 789-4652</span>
+              </a>
+              <a href="mailto:info@mobileautorepair.tech" className="flex items-center gap-2 hover:text-blue-400 transition">
+                <Mail className="h-4 w-4" />
+                <span>info@mobileautorepair.tech</span>
+              </a>
+            </div>
+            <div className="text-gray-300">
+              <span className="font-medium">Service Hours:</span> Mon-Fri 7am-7pm | Sat 8am-5pm
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Wrench className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-gray-900">Mobile Auto Repair</span>
+            <div>
+              <span className="text-xl font-bold text-gray-900 block">Mobile Auto Repair</span>
+              <a href="tel:+16577894652" className="text-xs text-primary font-medium lg:hidden">
+                (657) 789-4652
+              </a>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
@@ -32,8 +58,11 @@ export default function Header() {
             <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-primary transition">
               About
             </button>
-            <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-primary transition">
-              Contact
+            <button onClick={() => scrollToSection('testimonials')} className="text-gray-700 hover:text-primary transition">
+              Reviews
+            </button>
+            <button onClick={() => scrollToSection('service-areas')} className="text-gray-700 hover:text-primary transition">
+              Service Areas
             </button>
             <Button onClick={() => scrollToSection('booking')} size="lg">
               <Phone className="mr-2 h-4 w-4" />
@@ -66,10 +95,16 @@ export default function Header() {
               About
             </button>
             <button
-              onClick={() => scrollToSection('contact')}
+              onClick={() => scrollToSection('testimonials')}
               className="block w-full text-left text-gray-700 hover:text-primary transition"
             >
-              Contact
+              Reviews
+            </button>
+            <button
+              onClick={() => scrollToSection('service-areas')}
+              className="block w-full text-left text-gray-700 hover:text-primary transition"
+            >
+              Service Areas
             </button>
             <Button onClick={() => scrollToSection('booking')} className="w-full">
               <Phone className="mr-2 h-4 w-4" />

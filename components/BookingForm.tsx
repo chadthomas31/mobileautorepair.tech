@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, MapPin, Phone, Mail, CheckCircle, Camera, X, Video } from 'lucide-react'
+import CalendlyEmbed from '@/components/CalendlyEmbed'
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
@@ -21,6 +22,7 @@ export default function BookingForm() {
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [bookingMethod, setBookingMethod] = useState<'form' | 'calendly'>('form')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -76,12 +78,12 @@ export default function BookingForm() {
     // Check file size (max 50MB per file)
     const oversizedFiles = files.filter(f => f.size > 50 * 1024 * 1024)
     if (oversizedFiles.length > 0) {
-      alert('Some files are too large. Maximum file size is 50MB.')
+      alert('Some files are too large. Maximum file size is 50MB per file.')
       return
     }
     
     if (files.length + photos.length > 10) {
-      alert('Maximum 10 files allowed (photos + videos)')
+      alert('Maximum 10 files allowed (photos + videos combined)')
       return
     }
 
@@ -95,6 +97,12 @@ export default function BookingForm() {
       }
       reader.readAsDataURL(file)
     })
+  }
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes < 1024) return bytes + ' B'
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
   }
 
   const removePhoto = (index: number) => {
@@ -115,6 +123,12 @@ export default function BookingForm() {
                   <p className="text-gray-600 mb-4">
                     Thank you for choosing Mobile Auto Repair. We'll contact you shortly to confirm your appointment.
                   </p>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-left">
+                    <p className="text-sm text-blue-900 font-medium mb-2">📋 At your appointment:</p>
+                    <p className="text-sm text-blue-800">
+                      We confirm the issue, share a RepairPal-based estimate, and apply your $100 diagnostic + service charge as a credit when you approve the repair.
+                    </p>
+                  </div>
                   <Button onClick={() => setIsSubmitted(false)}>Book Another Service</Button>
                 </div>
               </CardContent>
@@ -131,10 +145,33 @@ export default function BookingForm() {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Book Your Service</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Fill out the form below and we'll get back to you within 2 hours to confirm your appointment.
+            Choose your preferred booking method below
           </p>
+          
+          {/* Booking Method Toggle */}
+          <div className="flex justify-center gap-4 mt-8">
+            <Button
+              variant={bookingMethod === 'form' ? 'default' : 'outline'}
+              onClick={() => setBookingMethod('form')}
+              size="lg"
+            >
+              Quick Form
+            </Button>
+            <Button
+              variant={bookingMethod === 'calendly' ? 'default' : 'outline'}
+              onClick={() => setBookingMethod('calendly')}
+              size="lg"
+            >
+              Schedule with Calendar
+            </Button>
+          </div>
         </div>
 
+        {bookingMethod === 'calendly' ? (
+          <div className="max-w-4xl mx-auto">
+            <CalendlyEmbed />
+          </div>
+        ) : (
         <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
           <Card>
             <CardHeader>
@@ -185,6 +222,7 @@ export default function BookingForm() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="(657) 789-4652"
+                    defaultValue="(657) 789-4652"
                   />
                 </div>
 
@@ -260,54 +298,98 @@ export default function BookingForm() {
                     <Video className="inline h-4 w-4 mr-1" />
                     Upload Photos or Videos (Optional)
                   </label>
-                  <p className="text-xs text-gray-500 mb-3">
-                    Add photos or videos of your vehicle or the issue (Max 10 files, 50MB each)
-                  </p>
+                  
+                  {/* Helpful Tips Section */}
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 mb-4">
+                    <p className="text-sm font-semibold text-blue-900 mb-2">📸 Help us diagnose faster:</p>
+                    <ul className="text-xs text-blue-800 space-y-1 ml-4">
+                      <li>• Take clear photos of the problem area</li>
+                      <li>• Include dashboard warning lights if any</li>
+                      <li>• Show fluid leaks or unusual wear</li>
+                      <li>• Record videos of strange noises or behaviors</li>
+                      <li>• Capture VIN number if visible</li>
+                    </ul>
+                    <p className="text-xs text-blue-700 mt-2 italic">
+                      Better visuals = More accurate estimates before we arrive!
+                    </p>
+                  </div>
                   
                   <div className="space-y-3">
                     {photoPreviews.length > 0 && (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        {photoPreviews.map((preview, index) => (
-                          <div key={index} className="relative group">
-                            {photos[index]?.type.startsWith('video/') ? (
-                              <div className="relative w-full h-24 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center">
-                                <Video className="h-8 w-8 text-gray-400" />
-                                <span className="absolute bottom-1 left-1 text-xs bg-black/70 text-white px-1 rounded">
-                                  Video
-                                </span>
-                              </div>
-                            ) : (
-                              <img
-                                src={preview}
-                                alt={`Preview ${index + 1}`}
-                                className="w-full h-24 object-cover rounded-lg border-2 border-gray-200"
-                              />
-                            )}
-                            <button
-                              type="button"
-                              onClick={() => removePhoto(index)}
-                              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <X className="h-4 w-4" />
-                            </button>
-                          </div>
-                        ))}
+                      <div className="space-y-2">
+                        <p className="text-xs font-medium text-gray-600">
+                          {photos.length} file{photos.length !== 1 ? 's' : ''} uploaded ({10 - photos.length} remaining)
+                        </p>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          {photoPreviews.map((preview, index) => (
+                            <div key={index} className="relative group">
+                              {photos[index]?.type.startsWith('video/') ? (
+                                <div className="relative w-full h-28 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg border-2 border-purple-300 flex flex-col items-center justify-center">
+                                  <Video className="h-10 w-10 text-purple-600 mb-1" />
+                                  <span className="text-xs font-medium text-purple-700">
+                                    {photos[index].name.length > 15 
+                                      ? photos[index].name.substring(0, 12) + '...' 
+                                      : photos[index].name}
+                                  </span>
+                                  <span className="text-xs text-purple-600 mt-1">
+                                    {formatFileSize(photos[index].size)}
+                                  </span>
+                                </div>
+                              ) : (
+                                <div className="relative">
+                                  <img
+                                    src={preview}
+                                    alt={`Preview ${index + 1}`}
+                                    className="w-full h-28 object-cover rounded-lg border-2 border-gray-300"
+                                  />
+                                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent rounded-b-lg p-1">
+                                    <p className="text-xs text-white truncate">
+                                      {photos[index].name.length > 15 
+                                        ? photos[index].name.substring(0, 12) + '...' 
+                                        : photos[index].name}
+                                    </p>
+                                    <p className="text-xs text-gray-300">
+                                      {formatFileSize(photos[index].size)}
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => removePhoto(index)}
+                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 shadow-lg hover:bg-red-600 transition-colors"
+                                title="Remove file"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                     
                     {photos.length < 10 && (
-                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary hover:bg-gray-50 transition-colors">
-                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                          <div className="flex gap-2 mb-2">
-                            <Camera className="h-8 w-8 text-gray-400" />
-                            <Video className="h-8 w-8 text-gray-400" />
+                      <label className="flex flex-col items-center justify-center w-full min-h-[140px] border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary hover:bg-blue-50 transition-all duration-200 bg-white">
+                        <div className="flex flex-col items-center justify-center py-6 px-4">
+                          <div className="flex gap-3 mb-3">
+                            <div className="bg-blue-100 p-3 rounded-full">
+                              <Camera className="h-6 w-6 text-blue-600" />
+                            </div>
+                            <div className="bg-purple-100 p-3 rounded-full">
+                              <Video className="h-6 w-6 text-purple-600" />
+                            </div>
                           </div>
-                          <p className="text-sm text-gray-600 font-medium">
-                            {photos.length === 0 ? 'Tap to upload photos/videos' : 'Add more files'}
+                          <p className="text-sm text-gray-700 font-semibold mb-1">
+                            {photos.length === 0 ? 'Click or tap to upload' : 'Add more files'}
                           </p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            {10 - photos.length} remaining
+                          <p className="text-xs text-gray-500 text-center">
+                            Photos & Videos • Max 50MB each
                           </p>
+                          {photos.length > 0 && (
+                            <p className="text-xs text-primary font-medium mt-2">
+                              {10 - photos.length} slot{10 - photos.length !== 1 ? 's' : ''} remaining
+                            </p>
+                          )}
                         </div>
                         <input
                           type="file"
@@ -319,6 +401,29 @@ export default function BookingForm() {
                         />
                       </label>
                     )}
+                    
+                    {photos.length >= 10 && (
+                      <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
+                        <p className="text-sm text-amber-800 font-medium">
+                          ✓ Maximum files reached (10/10)
+                        </p>
+                        <p className="text-xs text-amber-700 mt-1">
+                          Remove a file to add a different one
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
+                  <div className="bg-blue-100 rounded-full p-2 flex-shrink-0">
+                    <svg className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="text-sm text-blue-900">
+                    <p className="font-medium mb-1">Fair Pricing Policy</p>
+                    <p>We'll confirm the issue on-site first. $100 diagnostic + service charge credited when you approve the repair.</p>
                   </div>
                 </div>
 
@@ -339,14 +444,14 @@ export default function BookingForm() {
                   <Phone className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
-                    <p className="text-gray-600">(657) 789-4652</p>
+                    <a href="tel:+16577894652" className="text-primary hover:underline">(657) 789-4652</a>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <Mail className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <p className="text-gray-600">info@mobileautorepair.tech</p>
+                    <a href="mailto:info@mobileautorepair.tech" className="text-primary hover:underline">info@mobileautorepair.tech</a>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
@@ -363,6 +468,7 @@ export default function BookingForm() {
                     <p className="text-gray-600">Mon-Fri: 7am - 7pm</p>
                     <p className="text-gray-600">Sat: 8am - 5pm</p>
                     <p className="text-gray-600">Sun: Emergency only</p>
+                    <a href="tel:+16577894652" className="text-primary hover:underline text-sm mt-2 inline-block">Call (657) 789-4652</a>
                   </div>
                 </div>
               </CardContent>
@@ -374,13 +480,16 @@ export default function BookingForm() {
                 <p className="mb-4">
                   Need immediate assistance? We offer 24/7 emergency mobile repair services for urgent situations.
                 </p>
-                <Button variant="secondary" size="lg" className="w-full">
-                  Call Emergency Line
-                </Button>
+                <a href="tel:+16577894652" className="w-full">
+                  <Button variant="secondary" size="lg" className="w-full">
+                    Call (657) 789-4652
+                  </Button>
+                </a>
               </CardContent>
             </Card>
           </div>
         </div>
+        )}
       </div>
     </section>
   )

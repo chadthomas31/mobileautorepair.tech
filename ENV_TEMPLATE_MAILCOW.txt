@@ -1,0 +1,17 @@
+# Copy this to your .env.local file and fill in your actual values
+
+# Mailcow SMTP Configuration
+SMTP_HOST=mail.mobileautorepair.tech
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=info@mobileautorepair.tech
+SMTP_PASSWORD=YOUR_MAILCOW_PASSWORD_HERE
+SMTP_FROM=info@mobileautorepair.tech
+EMAIL_TO=info@mobileautorepair.tech
+
+# ElevenLabs Conversational AI (for chatbot)
+AGENT_ID=your_elevenlabs_agent_id
+ELEVENLABS_API_KEY=your_elevenlabs_api_key
+
+# Vercel Blob Storage (for customer photo/video uploads)
+BLOB_READ_WRITE_TOKEN=your_vercel_blob_token

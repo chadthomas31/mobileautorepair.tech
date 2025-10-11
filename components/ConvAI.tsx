@@ -42,6 +42,8 @@ async function getSignedUrl(): Promise<string> {
 export function ConvAI() {
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [conversationStartTime, setConversationStartTime] = useState<number | null>(null);
+  const [conversationMessages, setConversationMessages] = useState<any[]>([]);
 
   useEffect(() => {
     setIsClient(true);
@@ -57,9 +59,15 @@ export function ConvAI() {
   const conversation = useConversation({
     onConnect: () => {
       console.log("connected");
+      setConversationStartTime(Date.now());
+      setConversationMessages([]);
     },
     onDisconnect: () => {
       console.log("disconnected");
+      // Log conversation when it ends
+      if (conversationStartTime && conversationMessages.length > 0) {
+        logConversation();
+      }
     },
     onError: error => {
       console.log(error);
@@ -67,8 +75,44 @@ export function ConvAI() {
     },
     onMessage: message => {
       console.log(message);
+      setConversationMessages(prev => [...prev, message]);
     }
   });
+
+  async function logConversation() {
+    if (!conversationStartTime) return;
+    
+    const duration = Math.round((Date.now() - conversationStartTime) / 1000);
+    const minutes = Math.floor(duration / 60);
+    const seconds = duration % 60;
+    const durationStr = `${minutes}m ${seconds}s`;
+    
+    // Build transcript from messages
+    const transcript = conversationMessages
+      .map(msg => {
+        const role = msg.source === 'user' ? 'Customer' : 'AI Assistant';
+        const text = msg.message || JSON.stringify(msg);
+        return `[${role}]: ${text}`;
+      })
+      .join('\n\n');
+    
+    try {
+      await fetch('/api/chatbot-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          conversationId: `CONV-${conversationStartTime}`,
+          transcript: transcript || 'No transcript available',
+          duration: durationStr,
+          customerInfo: {
+            // Add any customer info extracted from conversation if available
+          }
+        })
+      });
+    } catch (error) {
+      console.error('Failed to log conversation:', error);
+    }
+  }
 
   async function startConversation() {
     const hasPermission = await requestMicrophonePermission();
@@ -146,6 +190,19 @@ export function ConvAI() {
                   : "AI Assistant is listening"
                 : "Voice Assistant"}
             </CardTitle>
+            {conversation.status === "disconnected" && (
+              <div className="mt-3 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <p className="text-xs text-center text-gray-700 font-medium mb-2">
+                  💬 Ask me about:
+                </p>
+                <ul className="text-xs text-gray-600 space-y-1">
+                  <li>• Service pricing and availability</li>
+                  <li>• What's included in diagnostics</li>
+                  <li>• Service areas we cover</li>
+                  <li>• Scheduling an appointment</li>
+                </ul>
+              </div>
+            )}
           </CardHeader>
           <div className={"flex flex-col gap-y-4 text-center items-center"}>
             {isMobile ? (

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
+import { sendBookingNotification } from '@/lib/email'
 
 export async function POST(request: Request) {
   try {
@@ -66,11 +67,23 @@ export async function POST(request: Request) {
       fileUrls: uploadedFiles.map(f => f.url)
     })
     
-    // Here you would typically:
-    // 1. Save booking data and file URLs to a database
-    // 2. Send confirmation email to customer with file links
-    // 3. Send notification to your team with booking details
-    // 4. Integrate with calendar/scheduling system
+    // Send email notification to info@mobileautorepair.tech
+    const emailResult = await sendBookingNotification({
+      bookingId,
+      name,
+      email,
+      phone,
+      location,
+      service,
+      date,
+      message,
+      uploadedFiles
+    })
+    
+    if (!emailResult.success) {
+      console.error('Failed to send email notification:', emailResult.error)
+      // Continue anyway - don't fail the booking if email fails
+    }
     
     return NextResponse.json(
       { 
@@ -78,7 +91,8 @@ export async function POST(request: Request) {
         message: 'Booking received successfully',
         bookingId,
         filesUploaded: uploadedFiles.length,
-        fileUrls: uploadedFiles.map(f => f.url)
+        fileUrls: uploadedFiles.map(f => f.url),
+        emailSent: emailResult.success
       },
       { status: 200 }
     )
